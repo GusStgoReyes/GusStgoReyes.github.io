@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gustavo X Santiago-Reyes — Neuroengineer & PhD Student</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- =====================================================
+       DATA FILES — edit these to update site content
+       data/research.js     → Research interest cards
+       data/blog.js         → Blog posts
+       data/visualizations.js → Visualization cards
+  ====================================================== -->
+  <script src="data/research.js"></script>
+  <script src="data/blog.js"></script>
+  <script src="data/visualizations.js"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    :root{
+      --cream:#fdf8f2;
+      --warm-dark:#1a1510;
+      --rust:#c45e2e;
+      --rust-light:#e8855a;
+      --sage:#4a7c6f;
+      --sage-light:#7ab5a5;
+      --sand:#e8ddd0;
+      --sand-mid:#d4c4b0;
+      --text:#2d2419;
+      --text-muted:#7a6a58;
+      --font-display:'Lora',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+    }
+
+    body{
+      background:var(--cream);color:var(--text);
+      font-family:var(--font-body);font-size:15px;
+      line-height:1.7;overflow-x:hidden;
+    }
+
+    /* NAV */
+    nav{
+      position:sticky;top:0;z-index:100;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 48px;
+      background:rgba(253,248,242,0.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--sand);
+    }
+    .nav-logo{
+      font-family:var(--font-display);font-size:17px;font-weight:500;
+      color:var(--warm-dark);letter-spacing:-0.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav-logo span{color:var(--rust)}
+    .pr-flag{font-size:14px;opacity:0.7}
+    .nav-links{display:flex;gap:32px}
+    .nav-links a{
+      color:var(--text-muted);text-decoration:none;
+      font-size:13px;font-weight:500;
+      letter-spacing:0.06em;text-transform:uppercase;
+      transition:color .2s;
+    }
+    .nav-links a:hover{color:var(--rust)}
+
+    /* HERO */
+    .hero{
+      min-height:92vh;display:grid;
+      grid-template-columns:1fr 1fr;
+      position:relative;overflow:hidden;
+    }
+    .hero-left{
+      padding:80px 48px 80px 64px;
+      display:flex;flex-direction:column;justify-content:center;
+      position:relative;z-index:2;
+    }
+    .hero-tag{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:11px;font-weight:500;
+      letter-spacing:0.12em;text-transform:uppercase;
+      color:var(--rust);background:rgba(196,94,46,0.08);
+      padding:5px 14px;border-radius:20px;
+      margin-bottom:28px;width:fit-content;
+    }
+    .hero-tag .flag{font-size:13px;opacity:0.85}
+    .hero-name{
+      font-family:var(--font-display);
+      font-size:clamp(36px,4.5vw,58px);
+      font-weight:600;line-height:1.12;
+      letter-spacing:-0.03em;
+      color:var(--warm-dark);margin-bottom:24px;
+    }
+    .hero-name em{font-style:italic;color:var(--rust)}
+    .hero-bio{
+      font-size:16px;line-height:1.8;
+      color:var(--text-muted);
+      max-width:440px;margin-bottom:40px;
+    }
+    .hero-bio strong{color:var(--text);font-weight:500}
+    .hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-primary{
+      background:var(--warm-dark);color:var(--cream);
+      padding:12px 28px;border-radius:30px;
+      text-decoration:none;font-size:13px;font-weight:500;
+      letter-spacing:0.04em;
+      transition:background .2s,transform .15s;
+    }
+    .btn-primary:hover{background:var(--rust);transform:translateY(-1px)}
+    .btn-secondary{
+      border:1.5px solid var(--sand-mid);color:var(--text);
+      padding:12px 28px;border-radius:30px;
+      text-decoration:none;font-size:13px;font-weight:500;
+      letter-spacing:0.04em;
+      transition:border-color .2s,color .2s,transform .15s;
+    }
+    .btn-secondary:hover{border-color:var(--rust);color:var(--rust);transform:translateY(-1px)}
+
+    .hero-right{
+      position:relative;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .hero-right::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 60% 50%,rgba(74,124,111,0.12) 0%,transparent 70%),
+                 radial-gradient(ellipse at 30% 80%,rgba(196,94,46,0.08) 0%,transparent 60%);
+    }
+    .brain-canvas{width:90%;max-width:420px;position:relative;z-index:1}
+
+    /* TOOLS STRIP */
+    .tools-strip{
+      background:var(--warm-dark);
+      padding:20px 64px;
+      display:flex;gap:40px;align-items:center;flex-wrap:wrap;
+    }
+    .tools-label{
+      font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+      color:rgba(255,255,255,0.35);white-space:nowrap;
+    }
+    .tool-pill{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;padding:6px 14px;
+      color:rgba(255,255,255,0.75);
+      font-size:12px;font-weight:400;white-space:nowrap;
+    }
+    .tool-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+    /* SECTIONS */
+    section{padding:96px 64px}
+    .section-label{
+      font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+      color:var(--rust);font-weight:500;margin-bottom:12px;
+    }
+    .section-title{
+      font-family:var(--font-display);
+      font-size:clamp(28px,3vw,40px);
+      font-weight:500;letter-spacing:-0.02em;
+      color:var(--warm-dark);margin-bottom:48px;line-height:1.2;
+    }
+
+    /* RESEARCH */
+    #research{background:var(--cream)}
+    .research-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .research-card{
+      background:#fff;border:1px solid var(--sand);
+      border-radius:16px;padding:32px;
+      transition:border-color .2s,transform .2s,box-shadow .2s;
+    }
+    .research-card:hover{
+      border-color:var(--rust-light);transform:translateY(-3px);
+      box-shadow:0 12px 40px rgba(196,94,46,0.08);
+    }
+    .card-icon{
+      width:42px;height:42px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;margin-bottom:18px;
+    }
+    .card-title{
+      font-family:var(--font-display);font-size:17px;font-weight:500;
+      color:var(--warm-dark);margin-bottom:8px;
+    }
+    .card-body{font-size:13px;color:var(--text-muted);line-height:1.75}
+    .card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+    .tag{
+      font-size:11px;padding:3px 10px;border-radius:12px;
+      background:var(--sand);color:var(--text-muted);font-weight:400;
+    }
+
+    /* VISUALIZATIONS */
+    #visualizations{background:var(--sand)}
+    .viz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .viz-card{
+      background:var(--cream);border:1px solid var(--sand-mid);
+      border-radius:16px;overflow:hidden;
+      transition:transform .2s,box-shadow .2s;cursor:pointer;
+      text-decoration:none;color:inherit;display:block;
+    }
+    .viz-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.1)}
+    .viz-preview{
+      height:180px;display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;
+    }
+    .viz-info{padding:18px 20px}
+    .viz-title{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--warm-dark);margin-bottom:4px}
+    .viz-desc{font-size:12px;color:var(--text-muted);line-height:1.6}
+    .viz-coming{
+      font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--rust);background:rgba(196,94,46,0.08);
+      padding:3px 8px;border-radius:8px;
+      display:inline-block;margin-top:8px;
+    }
+    .viz-live{
+      font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--sage);background:rgba(74,124,111,0.1);
+      padding:3px 8px;border-radius:8px;
+      display:inline-block;margin-top:8px;
+    }
+
+    /* BLOG */
+    #blog{background:var(--cream)}
+    .blog-list{display:flex;flex-direction:column}
+    .blog-post{
+      display:grid;grid-template-columns:100px 1fr auto;
+      align-items:start;gap:24px;
+      padding:28px 0;border-bottom:1px solid var(--sand);
+      text-decoration:none;color:inherit;
+      transition:opacity .2s;
+    }
+    .blog-post:hover{opacity:0.7}
+    .blog-post.coming{cursor:default;pointer-events:none}
+    .blog-date{font-size:12px;color:var(--text-muted);padding-top:3px;font-weight:300}
+    .blog-title{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--warm-dark);margin-bottom:6px}
+    .blog-excerpt{font-size:13px;color:var(--text-muted);line-height:1.65}
+    .blog-arrow{font-size:20px;color:var(--sand-mid);padding-top:2px;transition:color .2s,transform .2s}
+    .blog-post:hover .blog-arrow{color:var(--rust);transform:translateX(4px)}
+    .blog-post.coming .blog-arrow{opacity:0}
+
+    /* CONTACT */
+    #contact{background:var(--warm-dark);color:var(--cream);text-align:center}
+    #contact .section-label{color:var(--rust-light)}
+    #contact .section-title{color:var(--cream)}
+    .contact-sub{
+      color:rgba(253,248,242,0.55);max-width:480px;
+      margin:0 auto 40px;font-size:15px;line-height:1.8;
+    }
+    .contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .contact-link{
+      display:flex;align-items:center;gap:8px;
+      padding:12px 24px;
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:30px;color:rgba(255,255,255,0.75);
+      text-decoration:none;font-size:13px;
+      transition:border-color .2s,color .2s,background .2s;
+    }
+    .contact-link:hover{border-color:var(--rust-light);color:var(--rust-light);background:rgba(196,94,46,0.08)}
+    .footer-note{color:rgba(253,248,242,0.2);font-size:12px;margin-top:60px}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .hero-left>*{animation:fadeUp .6s ease both}
+    .hero-left>*:nth-child(1){animation-delay:.1s}
+    .hero-left>*:nth-child(2){animation-delay:.2s}
+    .hero-left>*:nth-child(3){animation-delay:.3s}
+    .hero-left>*:nth-child(4){animation-delay:.4s}
+    .brain-canvas{animation:float 6s ease-in-out infinite}
+
+    @media(max-width:768px){
+      nav{padding:14px 24px}
+      .nav-links{gap:18px}
+      .hero{grid-template-columns:1fr}
+      .hero-right{display:none}
+      .hero-left{padding:60px 24px}
+      section{padding:64px 24px}
+      .research-grid{grid-template-columns:1fr}
+      .viz-grid{grid-template-columns:1fr}
+      .tools-strip{padding:16px 24px;gap:12px}
+      .blog-post{grid-template-columns:1fr;gap:8px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    G<span>.</span>Santiago-Reyes
+    <span class="pr-flag" title="Puerto Rico 🇵🇷">🇵🇷</span>
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#visualizations">Viz</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO / ABOUT -->
+<section class="hero" id="about">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <span class="flag">🇵🇷</span>
+      Neuroengineer · PhD Student in Cognitive Neuroscience
+    </div>
+    <h1 class="hero-name">Gustavo X<br><em>Santiago-Reyes</em></h1>
+    <p class="hero-bio">
+      Curious about <strong>what shapes our choices</strong> — and how our brains and bodies are quietly involved in every decision we make. I study how cognitive biases arise and whether we can nudge them using neural stimulation.
+    </p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn-primary">See my research</a>
+      <a href="#blog" class="btn-secondary">Read the blog</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <svg class="brain-canvas" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bg1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(74,124,111,0.15)"/>
+          <stop offset="100%" stop-color="rgba(253,248,242,0)"/>
+        </radialGradient>
+      </defs>
+      <circle cx="200" cy="200" r="180" fill="url(#bg1)"/>
+      <path d="M200 110 C240 100,290 115,305 155 C320 190,310 220,295 240 C285 255,275 268,265 278 C250 292,230 300,200 298 C170 300,150 292,135 278 C125 268,115 255,105 240 C90 220,80 190,95 155 C110 115,160 100,200 110Z"
+        fill="none" stroke="#4a7c6f" stroke-width="1.5" opacity="0.5"/>
+      <path d="M155 145 C165 135,180 130,200 132 C218 130,233 136,242 148" fill="none" stroke="#4a7c6f" stroke-width="1.2" opacity="0.4"/>
+      <path d="M130 175 C140 165,155 160,170 162" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.35"/>
+      <path d="M270 175 C258 163,243 160,228 163" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.35"/>
+      <path d="M115 210 C128 198,142 193,158 196" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.3"/>
+      <path d="M285 210 C272 198,258 193,242 196" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.3"/>
+      <path d="M140 245 C155 235,170 231,187 233" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.3"/>
+      <path d="M260 245 C245 235,230 231,213 233" fill="none" stroke="#4a7c6f" stroke-width="1" opacity="0.3"/>
+      <line x1="200" y1="115" x2="200" y2="295" stroke="#4a7c6f" stroke-width="1" stroke-dasharray="4 4" opacity="0.25"/>
+      <ellipse cx="200" cy="200" rx="28" ry="18" fill="none" stroke="#c45e2e" stroke-width="1.2" opacity="0.6"/>
+      <circle cx="200" cy="200" r="9" fill="rgba(196,94,46,0.15)" stroke="#c45e2e" stroke-width="1.5"/>
+      <circle cx="200" cy="200" r="3.5" fill="#c45e2e" opacity="0.8"/>
+      <circle cx="204" cy="197" r="1.5" fill="white" opacity="0.9"/>
+      <path d="M200 298 C198 312,204 324,200 336 C196 348,202 358,200 370" fill="none" stroke="#c45e2e" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.5"/>
+      <path d="M192 374 C192 370,186 366,186 372 C186 376,192 382,200 386 C208 382,214 376,214 372 C214 366,208 370,208 374 C206 370,202 368,200 370 C198 368,194 370,192 374Z" fill="#c45e2e" opacity="0.5"/>
+      <circle cx="148" cy="160" r="3" fill="#4a7c6f" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="252" cy="160" r="3" fill="#4a7c6f" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" begin="0.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="135" cy="220" r="2.5" fill="#c45e2e" opacity="0.5">
+        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="265" cy="220" r="2.5" fill="#c45e2e" opacity="0.5">
+        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
+      </circle>
+      <ellipse cx="168" cy="178" rx="14" ry="10" fill="rgba(196,94,46,0.12)" stroke="rgba(196,94,46,0.3)" stroke-width="0.8">
+        <animate attributeName="rx" values="14;17;14" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="232" cy="178" rx="12" ry="9" fill="rgba(74,124,111,0.12)" stroke="rgba(74,124,111,0.3)" stroke-width="0.8">
+        <animate attributeName="rx" values="12;15;12" dur="3.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+      </ellipse>
+    </svg>
+  </div>
+</section>
+
+<!-- TOOLS STRIP -->
+<div class="tools-strip">
+  <span class="tools-label">Research methods</span>
+  <div class="tool-pill"><span class="tool-dot" style="background:#c45e2e"></span>Vagus nerve stimulation</div>
+  <div class="tool-pill"><span class="tool-dot" style="background:#7ab5a5"></span>Pupillometry</div>
+  <div class="tool-pill"><span class="tool-dot" style="background:#e8855a"></span>Heart rate recording</div>
+  <div class="tool-pill"><span class="tool-dot" style="background:#4a7c6f"></span>fMRI</div>
+  <div class="tool-pill"><span class="tool-dot" style="background:#d4c4b0"></span>Mixed gambles task</div>
+</div>
+
+<!-- RESEARCH — rendered from data/research.js -->
+<section id="research">
+  <div class="section-label">What I study</div>
+  <div class="section-title">Research interests</div>
+  <div class="research-grid" id="research-grid"></div>
+</section>
+
+<!-- VISUALIZATIONS — rendered from data/visualizations.js -->
+<section id="visualizations">
+  <div class="section-label">Interactive science</div>
+  <div class="section-title">Visualizations</div>
+  <div class="viz-grid" id="viz-grid"></div>
+</section>
+
+<!-- BLOG — rendered from data/blog.js -->
+<section id="blog">
+  <div class="section-label">Writing</div>
+  <div class="section-title">From the blog</div>
+  <div class="blog-list" id="blog-list"></div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in touch</div>
+  <h2 class="section-title">Let's talk brains</h2>
+  <p class="contact-sub">I'm always happy to chat about decision-making, cognitive biases, science communication, or anything in between. Reach out.</p>
+  <div class="contact-links">
+    <!-- UPDATE THESE LINKS -->
+    <a href="mailto:gussan@stanford.edu" class="contact-link">✉ Email</a>
+    <a href="https://twitter.com/" class="contact-link" target="_blank">𝕏 Twitter / X</a>
+    <a href="https://linkedin.com/" class="contact-link" target="_blank">in LinkedIn</a>
+    <a href="https://scholar.google.com/" class="contact-link" target="_blank">🎓 Google Scholar</a>
+  </div>
+  <p class="footer-note">© 2025 Gustavo X Santiago-Reyes · Stanford University 🇵🇷</p>
+</section>
+
+<script>
+  // ── Smooth scroll ────────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ── Viz preview SVGs ─────────────────────────────────────
+  const VIZ_PREVIEWS = {
+    "loss-aversion": {
+      bg: "linear-gradient(135deg,rgba(196,94,46,0.12),rgba(232,133,90,0.08))",
+      svg: `<svg width="140" height="120" viewBox="0 0 140 120">
+        <rect x="10" y="80" width="18" height="30" rx="3" fill="rgba(74,124,111,0.7)"/>
+        <rect x="36" y="60" width="18" height="50" rx="3" fill="rgba(74,124,111,0.8)"/>
+        <rect x="62" y="40" width="18" height="70" rx="3" fill="rgba(196,94,46,0.8)"/>
+        <rect x="88" y="55" width="18" height="55" rx="3" fill="rgba(196,94,46,0.6)"/>
+        <rect x="114" y="70" width="18" height="40" rx="3" fill="rgba(196,94,46,0.4)"/>
+        <line x1="5" y1="110" x2="135" y2="110" stroke="rgba(45,36,25,0.2)" stroke-width="1"/>
+      </svg>`
+    },
+    "pupil": {
+      bg: "linear-gradient(135deg,rgba(74,124,111,0.12),rgba(122,181,165,0.08))",
+      svg: `<svg width="140" height="120" viewBox="0 0 140 120">
+        <circle cx="70" cy="60" r="40" fill="none" stroke="rgba(74,124,111,0.3)" stroke-width="1"/>
+        <circle cx="70" cy="60" r="28" fill="none" stroke="rgba(74,124,111,0.4)" stroke-width="1"/>
+        <circle cx="70" cy="60" r="16" fill="rgba(74,124,111,0.15)" stroke="rgba(74,124,111,0.6)" stroke-width="1.5"/>
+        <circle cx="70" cy="60" r="5" fill="rgba(196,94,46,0.8)"/>
+        <line x1="70" y1="60" x2="98" y2="36" stroke="rgba(196,94,46,0.5)" stroke-width="1.5"/>
+        <line x1="70" y1="60" x2="44" y2="42" stroke="rgba(74,124,111,0.5)" stroke-width="1"/>
+        <line x1="70" y1="60" x2="52" y2="84" stroke="rgba(74,124,111,0.3)" stroke-width="0.8"/>
+      </svg>`
+    },
+    "choice-history": {
+      bg: "linear-gradient(135deg,rgba(196,94,46,0.08),rgba(74,124,111,0.1))",
+      svg: `<svg width="140" height="120" viewBox="0 0 140 120">
+        <polyline points="10,90 25,85 40,70 55,75 70,50 85,60 100,40 115,45 130,30" fill="none" stroke="rgba(196,94,46,0.7)" stroke-width="2" stroke-linejoin="round"/>
+        <polyline points="10,95 25,92 40,88 55,85 70,75 85,70 100,65 115,60 130,55" fill="none" stroke="rgba(74,124,111,0.5)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="4 2"/>
+        <line x1="5" y1="100" x2="135" y2="100" stroke="rgba(45,36,25,0.15)" stroke-width="1"/>
+        <line x1="5" y1="100" x2="5" y2="20" stroke="rgba(45,36,25,0.15)" stroke-width="1"/>
+      </svg>`
+    }
+  };
+
+  // ── Render research cards ─────────────────────────────────
+  const researchGrid = document.getElementById('research-grid');
+  RESEARCH.forEach(r => {
+    researchGrid.innerHTML += `
+      <div class="research-card">
+        <div class="card-icon" style="background:${r.iconBg}">${r.icon}</div>
+        <div class="card-title">${r.title}</div>
+        <p class="card-body">${r.body}</p>
+        <div class="card-tags">${r.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>`;
+  });
+
+  // ── Render viz cards ──────────────────────────────────────
+  const vizGrid = document.getElementById('viz-grid');
+  VISUALIZATIONS.forEach(v => {
+    const preview = VIZ_PREVIEWS[v.previewId] || { bg: 'var(--sand)', svg: '' };
+    const badge = v.coming
+      ? `<span class="viz-coming">Coming soon</span>`
+      : `<span class="viz-live">Live →</span>`;
+    const tag = v.coming ? '' : `href="${v.url}" target="_blank"`;
+    vizGrid.innerHTML += `
+      <a class="viz-card" ${tag}>
+        <div class="viz-preview" style="background:${preview.bg}">${preview.svg}</div>
+        <div class="viz-info">
+          <div class="viz-title">${v.title}</div>
+          <div class="viz-desc">${v.desc}</div>
+          ${badge}
+        </div>
+      </a>`;
+  });
+
+  // ── Render blog posts ─────────────────────────────────────
+  const blogList = document.getElementById('blog-list');
+  BLOG_POSTS.forEach(p => {
+    const arrow = p.coming ? '' : '→';
+    const href = p.coming ? '' : `href="${p.url}" target="_blank"`;
+    blogList.innerHTML += `
+      <a class="blog-post${p.coming ? ' coming' : ''}" ${href}>
+        <div class="blog-date">${p.date}</div>
+        <div>
+          <div class="blog-title">${p.title}</div>
+          <div class="blog-excerpt">${p.excerpt}</div>
+        </div>
+        <div class="blog-arrow">${arrow}</div>
+      </a>`;
+  });
+</script>
+
+</body>
+</html>
